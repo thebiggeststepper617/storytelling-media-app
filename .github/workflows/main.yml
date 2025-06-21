@@ -33,4 +33,8 @@ jobs:
         run: eas build -p ios --profile production --non-interactive
 
       - name: Submit iOS App
-        run: eas submit -p ios --latest
+        run: |
+          eas submit -p ios --latest \
+          --apple-team-id ${{ secrets.APPLE_TEAM_ID }} \
+          --app-store-connect-api-key-id ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }} \
+          --app-store-connect-issuer-id ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
