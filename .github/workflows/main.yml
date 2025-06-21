@@ -1,0 +1,36 @@
+name: EAS Build and Submit
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
+      - name: Configure EAS Build
+        run: eas build:configure
+
+      - name: Build iOS App
+        run: eas build -p ios --profile production --non-interactive
+
+      - name: Submit iOS App
+        run: eas submit -p ios --latest
